@@ -105,7 +105,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -132,6 +133,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Курсовая\aes.c" />
     <ClCompile Include="Курсовая\imgui\imgui.cpp" />
     <ClCompile Include="Курсовая\imgui\imgui_demo.cpp" />
     <ClCompile Include="Курсовая\imgui\imgui_draw.cpp" />
@@ -143,6 +145,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stb_image.h" />
+    <ClInclude Include="Курсовая\aes.h" />
+    <ClInclude Include="Курсовая\aes.hpp" />
     <ClInclude Include="Курсовая\dear_rects.h" />
     <ClInclude Include="Курсовая\dx12_imgui_utils.h" />
     <ClInclude Include="Курсовая\imgui\imconfig.h" />

@@ -23,6 +23,7 @@
     <ClCompile Include="Курсовая\imgui\imgui.cpp">
       <Filter>imgui</Filter>
     </ClCompile>
+    <ClCompile Include="Курсовая\aes.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Курсовая\dear_rects.h" />
@@ -57,6 +58,8 @@
     <ClInclude Include="stb_image.h">
       <Filter>imgui</Filter>
     </ClInclude>
+    <ClInclude Include="Курсовая\aes.h" />
+    <ClInclude Include="Курсовая\aes.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="imgui">

@@ -4,18 +4,32 @@
 #include <iostream>
 
 
+
 #include <random>
 
-int gen_num()
+const  uint8_t KEY[32] = { 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC, 0xCC };
+const  uint8_t IV[16] = { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 };
+#include "aes.hpp"
+std::string  gen_num()
 {
     std::random_device random_device; 
     std::mt19937 generator(random_device()); 
 
 
+
     std::uniform_int_distribution<> distribution(-1000, 1000);
 
+
+
+
     int x = distribution(generator);
-    return x;
+    std::string num = std::to_string(x);
+    struct AES_ctx ctx;
+
+    AES_init_ctx_iv(&ctx, KEY, IV);
+    AES_CTR_xcrypt_buffer(&ctx,(uint8_t*)num.c_str(), num.size());    
+
+    return num;
 }
 
 bool Contains(RectInfo self ,ImVec2 point)
@@ -48,7 +62,7 @@ void reset_game()
     {
         for (int j = 0; j < size_; j++)
         {
-            RectList[i][j] = 0;
+            RectList[i][j] = "";
         }
     }
 }
@@ -57,8 +71,12 @@ namespace global_config
      bool entered = false;
      char pin[255];
 }
+
 int WINAPI WinMain(HINSTANCE, HINSTANCE, PSTR, int)
 {
+   // AllocConsole();
+    //freopen("CONOUT$", "w", stdout);
+    //std::cout << "debug console opened" << std::endl;
     memset(global_config::pin, 0x0, sizeof(global_config::pin));
 
     StartRender* manager = nullptr;
@@ -115,12 +133,18 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, PSTR, int)
                     ImVec2 Pos;
                     Pos.x = ImGui::GetCursorScreenPos().x + i * 55;
                     Pos.y = ImGui::GetCursorScreenPos().y + j * 55;
-                    if (RectList[i][j] != 0)
+                    if (RectList[i][j] != "")
                     {
                         counter++;
-                        score += RectList[i][j];
+                        struct AES_ctx ctx;
+                        std::string decrypted_buf = RectList[i][j];
+                        AES_init_ctx_iv(&ctx, KEY, IV);
+                        AES_CTR_xcrypt_buffer(&ctx, (uint8_t*)decrypted_buf.c_str(), decrypted_buf.size());
+
+                        //std::cout << decrypted_buf.c_str() << std::endl;
+                        score += atoi(decrypted_buf.c_str());
                         ImGui::GetForegroundDrawList()->AddRectFilled(Pos, ImVec2(Pos.x + 55, Pos.y + 55), ImGui::GetColorU32(ImGuiCol_Button));
-                        ImGui::GetForegroundDrawList()->AddText(ImVec2(Pos.x, Pos.y), ImColor(0, 0, 0), std::to_string(RectList[i][j]).c_str());
+                        ImGui::GetForegroundDrawList()->AddText(ImVec2(Pos.x, Pos.y), ImColor(0, 0, 0), decrypted_buf.c_str());
                     }
                     ImGui::GetForegroundDrawList()->AddRect(Pos, ImVec2(Pos.x + 55, Pos.y + 55), ImColor(0, 0, 0));
 
@@ -140,10 +164,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, PSTR, int)
                                 {
                                   
                                
-                                    if (!RectList[i + x][j + y] && counter < 3 && !open_info)
+                                    if (RectList[i + x][j + y] == "" && counter < 3 && !open_info)
                                     {
                                       
                                         RectList[i + x][j + y] = gen_num();
+                                       
                                     }
                                     
 

@@ -16,15 +16,15 @@ struct RectInfo
     bool pushed = false;
 };
 
-int RectList[size_][size_] =
+std::string RectList[size_][size_] =
 {
-    {0, 0, 0},
-    {0, 0, 0}
+    {"", "", ""},
+    {"", "", ""}
 };
 bool is_valid_spawn( int x_size, int y_size, int i, int j)
 {
    
-
+    /*
     for (int x = 0; x < x_size; x++)
     {
         for (int y = 0; y < y_size; y++)
@@ -43,10 +43,12 @@ bool is_valid_spawn( int x_size, int y_size, int i, int j)
 
         }
     }
+    */
     return true;
 }
 int find_rects(int mat[size_][size_])
 {
+    /*
     static int copied[size_][size_];
 
     std::copy(&mat[0][0], &mat[0][0] + size_ * size_, &copied[0][0]);
@@ -77,6 +79,7 @@ int find_rects(int mat[size_][size_])
     }
 
     return count;
+    */
 }
 
 void write()
