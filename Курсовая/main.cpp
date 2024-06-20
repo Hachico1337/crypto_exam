@@ -59,17 +59,7 @@ namespace global_config
 }
 int WINAPI WinMain(HINSTANCE, HINSTANCE, PSTR, int)
 {
-   // AllocConsole();
-    //freopen("CONOUT$", "w", stdout);
-    std::cout << "debug console opened" << std::endl;
-
-
- 
-
-
     memset(global_config::pin, 0x0, sizeof(global_config::pin));
-
-
 
     StartRender* manager = nullptr;
     manager->SetKeysCallback();
