@@ -52,6 +52,11 @@ void reset_game()
         }
     }
 }
+namespace global_config
+{
+     bool entered = false;
+     char pin[255];
+}
 int WINAPI WinMain(HINSTANCE, HINSTANCE, PSTR, int)
 {
    // AllocConsole();
@@ -59,11 +64,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, PSTR, int)
     std::cout << "debug console opened" << std::endl;
 
 
-    static bool entered = false;
+ 
 
-   
-    char pin[255];
-    memset(pin, 0x0, sizeof(pin));
+
+    memset(global_config::pin, 0x0, sizeof(global_config::pin));
 
 
 
@@ -103,7 +107,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, PSTR, int)
         ImGui::Begin(u8"Ёкзамен Ѕагдасар€н", &is_open, ImGuiWindowFlags_NoResize  | flags);
         int score = 0;
         ImGui::SetWindowSize({ 400, 400 });
-        if (entered)
+        if (global_config::entered)
         {
     
             if (ImGui::Button(u8"—бросить"))
@@ -178,15 +182,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, PSTR, int)
         {
             ImGui::SetCursorPosY(((ImGui::GetWindowHeight()) - 25) / 2);
    
-            ImGui::InputText(u8"ѕин-код", pin, sizeof(pin), ImGuiInputTextFlags_Password);
+            ImGui::InputText(u8"ѕин-код", global_config::pin, sizeof(global_config::pin), ImGuiInputTextFlags_Password);
             static bool bad_enter = false;
             ImGui::SameLine();
             if (ImGui::Button(u8"¬ход"))
             {
-                if (strcmp(pin, "2509") == 0)
+                if (strcmp(global_config::pin, "2509") == 0)
                 {
                     reset_game();
-                    entered = true;
+                    global_config::entered = true;
                     bad_enter = false;
                 }
                 else {
